@@ -20,7 +20,10 @@ use windows::{
         },
         Storage::FileSystem::FILE_FLAGS_AND_ATTRIBUTES,
         UI::{
-            Shell::{SHGetFileInfoW, SHFILEINFOW, SHGFI_ICON},
+            Shell::{
+                SHGetFileInfoW, SHFILEINFOW, SHGFI_ICON,
+                SHGFI_LARGEICON, SHGFI_SHELLICONSIZE,
+            },
             WindowsAndMessaging::{GetIconInfo, HICON},
         },
     },
@@ -104,7 +107,7 @@ pub unsafe fn get_hicon(file_path: &str) -> HICON {
         FILE_FLAGS_AND_ATTRIBUTES(0),
         Some(&mut shfileinfo as *mut SHFILEINFOW),
         std::mem::size_of::<SHFILEINFOW>() as u32,
-        SHGFI_ICON,
+        SHGFI_ICON | SHGFI_LARGEICON | SHGFI_SHELLICONSIZE,
     );
 
     if result == 0 {
